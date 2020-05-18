@@ -1,0 +1,71 @@
+<hr>
+<div class="form-group">
+  <input type="text" class="form-control" placeholder="Search by name..."
+      style="width: 200px" [(ngModel)]="searchTerm"/>
+</div>
+<hr>
+<ul>
+    <li *ngFor="let contact of phonebook | phonebookFilter:searchTerm" 
+      (click)="onSelect(contact)">
+      <span>{{contact.name}}</span><span>{{contact.number}}</span><span>{{contact.mail}}</span>
+    </li>
+</ul>
+
+<form [formGroup]="contactForm"  (ngSubmit)="addContact()">
+  
+  <label>
+    Name:
+    <input type="text" formControlName="name">
+  </label>
+  <br/>
+
+  <label>
+    Number:
+    <input type="text" formControlName="number">
+  </label>
+  <br/>
+
+  <label>
+    Mail:
+    <input type="text" formControlName="mail">
+  </label>
+<br/>
+
+<button type="submit">Add</button>
+
+</form>
+<hr/>
+
+        
+
+
+<div *ngIf="isSelected">
+  <form [formGroup]="editForm"  (ngSubmit)="editContact()">
+  
+    <label>
+      Name:
+      <input type="text" formControlName="name">
+    </label>
+    <br/>
+  
+    <label>
+      Number:
+      <input type="text" formControlName="number">
+    </label>
+    <br/>
+  
+    <label>
+      Mail:
+      <input type="text" formControlName="mail">
+    </label>
+  <br/>
+  
+  <button type="submit">Edit</button>
+  
+  </form>
+  <br/>
+
+
+<span><button (click)="deleteContact()">Delete </button></span> 
+</div>
+
