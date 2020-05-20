@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PhonebookService } from '../phonebook.service';
 import { Contact } from '../contact';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
-import { PhoneNumber, parsePhoneNumber, isValidNumber, } from 'libphonenumber-js';
+import { isValidPhoneNumber } from '../shared/validators/is-phone-number';
+import { parsePhoneNumber } from 'libphonenumber-js';
+
 
 @Component({
   selector: 'app-phonebook',
@@ -26,7 +28,7 @@ export class PhonebookComponent implements OnInit {
 
   contactForm = new FormGroup({
     name: new FormControl('', [Validators.required,  Validators.pattern('^[a-zA-Z]{1,20}\ [a-zA-Z]{1,20}$') ] ),
-    number: new FormControl('', [Validators.required, this.countryValidator ]),
+    number: new FormControl('', [Validators.required, isValidPhoneNumber ]),
     mail: new FormControl('', [Validators.required, Validators.email]),
   });
 
@@ -62,6 +64,9 @@ export class PhonebookComponent implements OnInit {
       this.showNumberMethod();
       this.showMailMethod();
       } else {
+        /*this.phonebookService.add(new Contact (this.contactForm.get('name').value,
+        (parsePhoneNumber(this.contactForm.get('number').value).number) as string,
+        this.contactForm.get('mail').value)); */
         this.phonebookService.add(this.contactForm.value);
         this.showName = false;
         this.showNumber = false;
@@ -74,17 +79,6 @@ export class PhonebookComponent implements OnInit {
      this.theChosenOne = this.editForm.value; this.phonebookService.edit(this.theChosenOne, this.indeks); }
   }
 
-  countryValidator(control: FormControl) {
-    const broj = control.value;
-
-    if (isValidNumber(broj)) {
-    console.log('Ispravan broj');
-    return null;
-    }
-
-    console.log('Greska');
-    return Error;
-  }
 
   showNameMethod() { if (!this.contactForm.get('name').valid) {
     this.showName = true;
@@ -100,4 +94,5 @@ export class PhonebookComponent implements OnInit {
     this.showMail = true;
     } else {this.showMail = false; }
   }
+
 }
