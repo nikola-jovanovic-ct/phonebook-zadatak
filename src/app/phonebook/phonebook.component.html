@@ -15,9 +15,8 @@
   
   <label>
     Name: </label>
-    <input type="text" formControlName="name" >
+    <input type="text" formControlName="name">
   <br/>
- <!-- pattern= '^[a-z]{1,20}\ [a-z]{1,20}$'-->
   <label>
     Number:
     <input type="text" formControlName="number" >
@@ -30,9 +29,12 @@
   </label>
 <br/>
 
-<button type="submit" > Add</button>
+<button type="submit">Add</button>
 
 </form>
+<div class='error-message' *ngIf="showName"> <p> Molim vas unesite vase puno ime i prezime. </p> </div>
+<div class='error-message' *ngIf="showNumber"> <p> Molim vas unesite vas broj u ispravnom formatu. </p> </div>
+<div class='error-message' *ngIf="showMail"> <p> Molim vas unesite vas mail u ispravnom formatu. </p> </div>
 <hr/>
 
         

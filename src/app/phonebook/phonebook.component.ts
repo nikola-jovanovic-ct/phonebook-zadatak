@@ -16,12 +16,16 @@ export class PhonebookComponent implements OnInit {
 
   phonebook = this.phonebookService.getAllContacts();
 
+  showName = false;
+  showNumber = false;
+  showMail = false;
+
   theChosenOne = new Contact('', '', '');
   isSelected = false;
   indeks = this.phonebook.indexOf(this.theChosenOne);
 
   contactForm = new FormGroup({
-    name: new FormControl('', [Validators.required,  Validators.pattern('^[a-z]{1,20}\ [a-z]{1,20}$') ] ),
+    name: new FormControl('', [Validators.required,  Validators.pattern('^[a-zA-Z]{1,20}\ [a-zA-Z]{1,20}$') ] ),
     number: new FormControl('', [Validators.required, this.countryValidator ]),
     mail: new FormControl('', [Validators.required, Validators.email]),
   });
@@ -53,10 +57,15 @@ export class PhonebookComponent implements OnInit {
   }
 
   addContact() {
-   if (!this.contactForm.valid) {
-    console.log('Not ok');
-    } else {
-    this.phonebookService.add(this.contactForm.value);
+    if (!this.contactForm.valid)  {
+      this.showNameMethod();
+      this.showNumberMethod();
+      this.showMailMethod();
+      } else {
+        this.phonebookService.add(this.contactForm.value);
+        this.showName = false;
+        this.showNumber = false;
+        this.showMail = false;
    }
   }
 
@@ -65,15 +74,10 @@ export class PhonebookComponent implements OnInit {
      this.theChosenOne = this.editForm.value; this.phonebookService.edit(this.theChosenOne, this.indeks); }
   }
 
-  countryValidator(number: FormControl) {
-    const broj = number.value;
+  countryValidator(control: FormControl) {
+    const broj = control.value;
 
     if (isValidNumber(broj)) {
-   /* const cleanNumber =  parsePhoneNumber(this.contactForm.get('number').value);
-    console.log(cleanNumber.country);
-     const cleanBroj = parseIncompletePhoneNumber(broj);
-    if (parsePhoneNumber(cleanBroj).country !== 'RS') {}
-    */
     console.log('Ispravan broj');
     return null;
     }
@@ -82,4 +86,18 @@ export class PhonebookComponent implements OnInit {
     return Error;
   }
 
+  showNameMethod() { if (!this.contactForm.get('name').valid) {
+    this.showName = true;
+    } else {this.showName = false; }
+
+  }
+  showNumberMethod() { if (!this.contactForm.get('number').valid) {
+    this.showNumber = true;
+    } else {this.showNumber = false; }
+  }
+
+  showMailMethod() { if (!this.contactForm.get('mail').valid) {
+    this.showMail = true;
+    } else {this.showMail = false; }
+  }
 }
