@@ -14,14 +14,13 @@
 <form [formGroup]="contactForm"  (ngSubmit)="addContact()">
   
   <label>
-    Name:
-    <input type="text" formControlName="name">
-  </label>
+    Name: </label>
+    <input type="text" formControlName="name" >
   <br/>
-
+ <!-- pattern= '^[a-z]{1,20}\ [a-z]{1,20}$'-->
   <label>
     Number:
-    <input type="text" formControlName="number">
+    <input type="text" formControlName="number" >
   </label>
   <br/>
 
@@ -31,7 +30,7 @@
   </label>
 <br/>
 
-<button type="submit">Add</button>
+<button type="submit" > Add</button>
 
 </form>
 <hr/>

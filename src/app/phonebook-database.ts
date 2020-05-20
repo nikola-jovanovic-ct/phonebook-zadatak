@@ -1,5 +1,4 @@
 import { Contact } from './contact';
-import { Subject } from 'rxjs';
 
 
 export const Phonebook: Contact[] = [

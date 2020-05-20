@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PhonebookService } from '../phonebook.service';
 import { Contact } from '../contact';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators, } from '@angular/forms';
+import { PhoneNumber, parsePhoneNumber, isValidNumber, } from 'libphonenumber-js';
 
 @Component({
   selector: 'app-phonebook',
@@ -20,15 +21,15 @@ export class PhonebookComponent implements OnInit {
   indeks = this.phonebook.indexOf(this.theChosenOne);
 
   contactForm = new FormGroup({
-    name: new FormControl(''),
-    number: new FormControl(''),
-    mail: new FormControl(''),
+    name: new FormControl('', [Validators.required,  Validators.pattern('^[a-z]{1,20}\ [a-z]{1,20}$') ] ),
+    number: new FormControl('', [Validators.required, this.countryValidator ]),
+    mail: new FormControl('', [Validators.required, Validators.email]),
   });
 
   editForm = new FormGroup({
-    name: new FormControl(''),
-    number: new FormControl(''),
-    mail: new FormControl(''),
+    name: new FormControl('', Validators.required),
+    number: new FormControl('', Validators.required),
+    mail: new FormControl('', [Validators.required, Validators.email]),
   });
 
   ngOnInit(): void {
@@ -52,13 +53,33 @@ export class PhonebookComponent implements OnInit {
   }
 
   addContact() {
+   if (!this.contactForm.valid) {
+    console.log('Not ok');
+    } else {
     this.phonebookService.add(this.contactForm.value);
+   }
   }
 
   editContact() {
-   this.theChosenOne = this.editForm.value;
-   this.phonebookService.edit(this.theChosenOne, this.indeks);
+    if (!this.editForm.valid) {console.log('Not ok'); } else {
+     this.theChosenOne = this.editForm.value; this.phonebookService.edit(this.theChosenOne, this.indeks); }
   }
 
+  countryValidator(number: FormControl) {
+    const broj = number.value;
+
+    if (isValidNumber(broj)) {
+   /* const cleanNumber =  parsePhoneNumber(this.contactForm.get('number').value);
+    console.log(cleanNumber.country);
+     const cleanBroj = parseIncompletePhoneNumber(broj);
+    if (parsePhoneNumber(cleanBroj).country !== 'RS') {}
+    */
+    console.log('Ispravan broj');
+    return null;
+    }
+
+    console.log('Greska');
+    return Error;
+  }
 
 }
