@@ -64,10 +64,10 @@ export class PhonebookComponent implements OnInit {
       this.showNumberMethod();
       this.showMailMethod();
       } else {
-        /*this.phonebookService.add(new Contact (this.contactForm.get('name').value,
+        this.phonebookService.add(new Contact (this.contactForm.get('name').value,
         (parsePhoneNumber(this.contactForm.get('number').value).number) as string,
-        this.contactForm.get('mail').value)); */
-        this.phonebookService.add(this.contactForm.value);
+        this.contactForm.get('mail').value)); 
+        //this.phonebookService.add(this.contactForm.value);
         this.showName = false;
         this.showNumber = false;
         this.showMail = false;
